@@ -1,14 +1,17 @@
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 
 export const useProductsStore = defineStore('products', () => {
   let products = reactive([])
 
   const newProduct = function () {
     products.push({
+      id: products[products.length - 1] == undefined ? 1 : products[products.length - 1].id + 1,
       name: '',
       price: '',
-      id: products[products.length - 1] == undefined ? 1 : products[products.length - 1].id + 1
+      usersAte: [],
+      
     })
   }
 
@@ -33,5 +36,12 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  return { products, addProductInList, removeProduct, isEmptyProduct }
+  const router = useRouter()
+  function saveProductsForm() {
+    if (!isEmptyProduct()) {
+      console.log(products)
+    }
+  }
+
+  return { products, addProductInList, removeProduct, saveProductsForm }
 })

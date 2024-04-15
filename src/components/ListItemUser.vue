@@ -9,19 +9,16 @@
     ></v-text-field>
     <template v-slot:append>
       <v-btn
-        color="grey-lighten-1"
-        icon="mdi-information"
+        icon="$close"
+        density="compact"
         variant="text"
         @Click="removeUser(item.id)"
-      >
-        <img :src="iconClose"
-      /></v-btn>
+      ></v-btn>
     </template>
   </v-list-item>
 </template>
 
 <script setup>
-import iconClose from '../assets/svg/close.svg'
 import { defineProps } from 'vue'
 import { useUsersStore } from '../stores/users'
 

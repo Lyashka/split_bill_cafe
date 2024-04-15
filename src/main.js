@@ -15,6 +15,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
+import { mdi } from 'vuetify/iconsets/mdi'
 
 const vuetify = createVuetify({
   components,
@@ -23,7 +24,8 @@ const vuetify = createVuetify({
     defaultSet: 'fa',
     aliases,
     sets: {
-      fa
+      fa,
+      mdi
     }
   }
 })

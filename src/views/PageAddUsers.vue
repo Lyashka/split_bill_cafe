@@ -1,6 +1,6 @@
 <template>
   <v-form @submit.prevent class="mt-10">
-    <v-card class="mx-auto text-center" max-width="500px" min-height="100px">
+    <v-card class="mx-auto text-center" max-width="600px" min-height="100px">
       <v-btn block density="comfortable" @Click="addUserInList()">Добавить</v-btn>
       <div v-if="users.length == 0">Список пуст...</div>
       <v-list>
@@ -26,17 +26,12 @@ import { useUsersStore } from '../stores/users'
 
 import ListItemUser from '@/components/ListItemUser.vue'
 
-import { useRouter } from 'vue-router'
-const router = useRouter()
+
 
 const usersStore = useUsersStore()
-const { users, addUserInList, isEmptyName } = usersStore
+const { users, addUserInList, saveUsersForm } = usersStore
 
-function saveUsersForm() {
-  if (!isEmptyName()) {
-    router.push('/products')
-  }
-}
+
 
 watch(users, async (newQuestion, oldQuestion) => {
   console.log(users)

@@ -1,6 +1,6 @@
 import { ref, reactive } from 'vue'
 import { defineStore } from 'pinia'
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 export const useUsersStore = defineStore('users', () => {
   let users = reactive([])
@@ -33,5 +33,13 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-  return { users, addUserInList, removeUser, isEmptyName }
+
+const router = useRouter()
+  function saveUsersForm() {
+    if (!isEmptyName()) {
+      router.push('/products')
+    }
+  }
+
+  return { users, addUserInList, removeUser, saveUsersForm }
 })
