@@ -1,4 +1,4 @@
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
@@ -10,8 +10,8 @@ export const useProductsStore = defineStore('products', () => {
       id: products[products.length - 1] == undefined ? 1 : products[products.length - 1].id + 1,
       name: '',
       price: '',
-      usersAte: [],
-      
+      userPayer: '',
+      usersAte: []
     })
   }
 
@@ -36,12 +36,16 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
+  let summPrice = () => {
+    return products.reduce((acc, curr) => (acc += Number(curr.price)), 0)
+  }
+
   const router = useRouter()
   function saveProductsForm() {
     if (!isEmptyProduct()) {
-      console.log(products)
+      router.push('/results')
     }
   }
 
-  return { products, addProductInList, removeProduct, saveProductsForm }
+  return { products, addProductInList, removeProduct, saveProductsForm, summPrice }
 })

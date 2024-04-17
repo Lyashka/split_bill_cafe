@@ -20,27 +20,12 @@
 </template>
 
 <script setup>
-import { reactive, computed, watch } from 'vue'
-
 import { useUsersStore } from '../stores/users'
 
 import ListItemUser from '@/components/ListItemUser.vue'
 
-
-
 const usersStore = useUsersStore()
 const { users, addUserInList, saveUsersForm } = usersStore
-
-
-
-watch(users, async (newQuestion, oldQuestion) => {
-  console.log(users)
-})
 </script>
 
-<style scoped>
-img {
-  border: none;
-  background: none;
-}
-</style>
+<style scoped></style>

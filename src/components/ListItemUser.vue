@@ -8,12 +8,7 @@
       class="pl-5"
     ></v-text-field>
     <template v-slot:append>
-      <v-btn
-        icon="$close"
-        density="compact"
-        variant="text"
-        @Click="removeUser(item.id)"
-      ></v-btn>
+      <v-btn icon="$close" density="compact" variant="text" @Click="removeUser(item.id)"></v-btn>
     </template>
   </v-list-item>
 </template>

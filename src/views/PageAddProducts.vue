@@ -5,6 +5,7 @@
       <v-list>
         <ListItemProduct v-for="item in products" :key="item.id" :item="item" />
       </v-list>
+      <div>Общий счет: {{ summPrice() }}</div>
       <v-btn
         v-if="products.length != 0"
         block
@@ -19,14 +20,12 @@
 </template>
 
 <script setup>
-import { reactive, watch } from 'vue'
-
 import ListItemProduct from '@/components/ListItemProduct.vue'
 
 import { useProductsStore } from '../stores/products'
 
 const productsStore = useProductsStore()
-const { products, addProductInList, saveProductsForm } = productsStore
+const { products, addProductInList, saveProductsForm, summPrice } = productsStore
 
 const rules = [
   (value) => {
@@ -34,10 +33,6 @@ const rules = [
     return 'Обязательное поле'
   }
 ]
-
-watch(products, async (newQuestion, oldQuestion) => {
-  console.log(products)
-})
 </script>
 
 <style scoped></style>
