@@ -33,7 +33,6 @@ export const useUsersStore = defineStore('users', () => {
     }
   }
 
-
 const router = useRouter()
   function saveUsersForm() {
     if (!isEmptyName()) {

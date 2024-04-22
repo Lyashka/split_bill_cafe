@@ -1,12 +1,18 @@
 <template>
-  <v-card class="mx-auto text-center mt-10 card-container" max-width="600px" min-height="100px">
-    <label>Результаты</label>
+  <v-card class="mx-auto text-center mt-16 card-container" max-width="600px" min-height="100px">
+    <div class="btn-back-container">
+      <BackBtn :url="'/products'"/>
+    <label class="lable-results">Результаты</label>
+    </div>
+    
     <TableResults :arrDebtors="arrDebtors" />
   </v-card>
 </template>
 
 <script setup>
-import TableResults from '../components/TableResults.vue'
+import TableResults from '../components/TableResults.vue' 
+import BackBtn from '@/components/UI/BackBtn.vue'
+
 import { reactive } from 'vue'
 import { useProductsStore } from '../stores/products'
 
@@ -77,6 +83,15 @@ calculationResults()
 </script>
 
 <style scoped lang="scss">
+@import '../assets//main.scss';
+.btn-back-container{
+  @include flexble;
+
+  .lable-results{
+    margin-left: 30%;
+  }
+}
+
 .card-container {
   font-size: 20px;
 }

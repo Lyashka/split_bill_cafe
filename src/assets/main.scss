@@ -1,0 +1,10 @@
+@import '../assets/base.scss';
+
+body {
+  margin: 0 auto;
+}
+
+@mixin flexble {
+  display: flex;
+  align-items:center;
+} 

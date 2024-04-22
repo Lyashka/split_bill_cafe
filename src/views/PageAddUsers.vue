@@ -1,7 +1,7 @@
 <template>
-  <v-form @submit.prevent class="mt-10">
+  <v-form @submit.prevent class="mt-16">
     <v-card class="mx-auto text-center" max-width="600px" min-height="100px">
-      <v-btn block density="comfortable" @Click="addUserInList()">Добавить</v-btn>
+      <v-btn block density="comfortable" @Click="addUserInList()" variant="text">Добавить</v-btn>
       <div v-if="users.length == 0">Список пуст...</div>
       <v-list>
         <ListItemUser v-for="item in users" :key="item.id" :item="item" />

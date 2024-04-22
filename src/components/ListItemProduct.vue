@@ -39,18 +39,18 @@
       </v-chip>
     </v-row>
 
-    <div v-if="expanded" class="ml-3">
+    <div v-show="expanded" class="ml-3">
       <v-row>
-        <v-select
+        <v-select 
+        variant="solo-inverted" 
           style="width: 100%"
           label="Платит"
           :items="arrListNameUsers"
           v-model="userPayer"
         ></v-select>
-        <div style="width: 100%; text-align: start">Кто кушал:</div>
+        <div style="width: 100%; text-align: start">Кто ел:</div>
         <v-checkbox
-          style="display: flex"
-          class="pl-1"
+          class="pl-1 checkbox"
           v-for="item in users"
           :label="item.name"
           :value="item"
@@ -66,6 +66,7 @@ import { ref, defineProps, watch } from 'vue'
 import { useProductsStore } from '../stores/products'
 import { useUsersStore } from '../stores/users'
 
+
 const productsStore = useProductsStore()
 const { removeProduct } = productsStore
 
@@ -75,6 +76,10 @@ const { users } = usersStore
 const props = defineProps({
   item: Object
 })
+
+console.log(props.item);
+
+
 
 const rules = [
   (value) => {
@@ -108,4 +113,9 @@ watch(userPayer, async () => {
 })
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+@import '../assets//main.scss';
+.checkbox{
+  @include flexble
+}
+</style>
