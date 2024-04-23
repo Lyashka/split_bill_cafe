@@ -25,7 +25,9 @@ import { useUsersStore } from '../stores/users'
 import ListItemUser from '@/components/ListItemUser.vue'
 
 const usersStore = useUsersStore()
-const { users, addUserInList, saveUsersForm } = usersStore
+const { users, addUserInList, saveUsersForm, getUsersFromLocaleStorage } = usersStore
+
+getUsersFromLocaleStorage()
 </script>
 
 <style scoped></style>

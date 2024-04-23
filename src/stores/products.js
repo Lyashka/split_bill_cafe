@@ -1,4 +1,4 @@
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, watch } from 'vue'
 import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
@@ -40,6 +40,14 @@ export const useProductsStore = defineStore('products', () => {
     return products.reduce((acc, curr) => (acc += Number(curr.price)), 0)
   }
 
+  watch(products, async () => {
+    localStorage.setItem('products', JSON.stringify(products))
+  })
+
+  function getProductsFromLocaleStorage() {
+    return JSON.parse(localStorage.getItem('products'))
+  }
+
   const router = useRouter()
   function saveProductsForm() {
     if (!isEmptyProduct()) {
@@ -47,5 +55,17 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  return { products, addProductInList, removeProduct, saveProductsForm, summPrice }
+  function clearProducts() {
+    products.splice(0, products.length)
+  }
+
+  return {
+    products,
+    addProductInList,
+    removeProduct,
+    saveProductsForm,
+    summPrice,
+    getProductsFromLocaleStorage,
+    clearProducts
+  }
 })

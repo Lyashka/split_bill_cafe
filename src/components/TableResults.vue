@@ -7,6 +7,11 @@
           <th class="text-center">Кому</th>
           <th class="text-center">Сколько</th>
         </tr>
+        <tr v-if="arrDebtors.length == 0">
+          <th></th>
+          <th class="text-message">Никто ничего не должен</th>
+          <th></th>
+        </tr>
       </thead>
       <tbody>
         <tr v-for="item in arrDebtors">
@@ -27,8 +32,13 @@ const props = defineProps({
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '../assets//main.scss';
 .table-container {
   font-size: 15px;
+  .text-message {
+    @include flexble;
+    justify-content: center;
+  }
 }
 </style>

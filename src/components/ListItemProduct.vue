@@ -39,10 +39,10 @@
       </v-chip>
     </v-row>
 
-    <div v-show="expanded" class="ml-3">
+    <div v-if="expanded" class="ml-3">
       <v-row>
-        <v-select 
-        variant="solo-inverted" 
+        <v-select
+          variant="solo-inverted"
           style="width: 100%"
           label="Платит"
           :items="arrListNameUsers"
@@ -66,20 +66,15 @@ import { ref, defineProps, watch } from 'vue'
 import { useProductsStore } from '../stores/products'
 import { useUsersStore } from '../stores/users'
 
-
 const productsStore = useProductsStore()
-const { removeProduct } = productsStore
+const { removeProduct, products, getProductsFromLocaleStorage } = productsStore
 
 const usersStore = useUsersStore()
-const { users } = usersStore
+const { users, getUsersFromLocaleStorage } = usersStore
 
 const props = defineProps({
   item: Object
 })
-
-console.log(props.item);
-
-
 
 const rules = [
   (value) => {
@@ -111,11 +106,23 @@ let userPayer = ref('')
 watch(userPayer, async () => {
   props.item.userPayer = userPayer.value
 })
+
+//get users and products from localeStorage
+getUsersFromLocaleStorage()
+
+if (getProductsFromLocaleStorage() != null) {
+  getProductsFromLocaleStorage().forEach((e) => {
+    if (e.id == props.item.id) {
+      userPayer.value = e.userPayer
+      checkInfo.value = e.usersAte
+    }
+  })
+}
 </script>
 
 <style scoped lang="scss">
 @import '../assets//main.scss';
-.checkbox{
-  @include flexble
+.checkbox {
+  @include flexble;
 }
 </style>

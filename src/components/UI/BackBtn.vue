@@ -1,9 +1,8 @@
 <template>
-  <v-btn icon="$first" variant="plain" @click="openPrevPage">
-</v-btn>
+  <v-btn icon="$first" variant="plain" @click="openPrevPage"> </v-btn>
 </template>
 
-<script setup> 
+<script setup>
 import { useRouter } from 'vue-router'
 import { defineProps } from 'vue'
 
@@ -13,10 +12,8 @@ const props = defineProps({
 
 const router = useRouter()
 function openPrevPage() {
-    router.push(`${props.url}`)
+  router.push(`${props.url}`)
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

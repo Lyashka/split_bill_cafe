@@ -1,23 +1,30 @@
 <template>
   <v-card class="mx-auto text-center mt-16 card-container" max-width="600px" min-height="100px">
     <div class="btn-back-container">
-      <BackBtn :url="'/products'"/>
-    <label class="lable-results">Результаты</label>
+      <BackBtn :url="'/products'" />
+      <label>Результаты</label>
+      <v-btn @click="resetForms()" variant="plain">Начать занаво</v-btn>
     </div>
-    
+
     <TableResults :arrDebtors="arrDebtors" />
   </v-card>
 </template>
 
 <script setup>
-import TableResults from '../components/TableResults.vue' 
+import TableResults from '../components/TableResults.vue'
 import BackBtn from '@/components/UI/BackBtn.vue'
 
-import { reactive } from 'vue'
 import { useProductsStore } from '../stores/products'
+import { useUsersStore } from '../stores/users'
+
+import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const productsStore = useProductsStore()
-const { products } = productsStore
+const { products, clearProducts } = productsStore
+
+const usersStore = useUsersStore()
+const { users, clearUsers } = usersStore
 
 let arrDebtors = reactive([])
 
@@ -80,16 +87,22 @@ function calculationExpenses() {
 }
 
 calculationResults()
+
+const router = useRouter()
+function resetForms() {
+  localStorage.clear()
+  clearProducts()
+  clearUsers()
+
+  router.push('/')
+}
 </script>
 
 <style scoped lang="scss">
 @import '../assets//main.scss';
-.btn-back-container{
+.btn-back-container {
   @include flexble;
-
-  .lable-results{
-    margin-left: 30%;
-  }
+  justify-content: space-between;
 }
 
 .card-container {
