@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
 export const useProductsStore = defineStore('products', () => {
-  let products = reactive([])
+  const products = reactive([])
 
-  const newProduct = function () {
+  const addNewProduct = function () {
     products.push({
       id: products[products.length - 1] == undefined ? 1 : products[products.length - 1].id + 1,
       name: '',
@@ -20,13 +20,9 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   function addProductInList() {
-    if (products.length == 0) {
-      newProduct()
-    } else {
       if (!isEmptyProduct()) {
-        newProduct()
+        addNewProduct()
       }
-    }
   }
 
   function removeProduct(id) {
@@ -36,7 +32,7 @@ export const useProductsStore = defineStore('products', () => {
     }
   }
 
-  let summPrice = () => {
+  const summPrice = () => {
     return products.reduce((acc, curr) => (acc += Number(curr.price)), 0)
   }
 
@@ -59,6 +55,25 @@ export const useProductsStore = defineStore('products', () => {
     products.splice(0, products.length)
   }
 
+  function updateProduct(newProductItem) {
+    console.log(newProductItem);
+    products.forEach(e => {
+      if (e.id == newProductItem.id){
+        e.userPayer = newProductItem.userPayer
+        e.usersAte = newProductItem.usersAte
+      }
+    })
+  }
+
+  function searchDuplicatesProducts() {
+    const lastProductName = products[products.length - 1].name.toLowerCase();
+    for (let i = 0; i < products.length - 1; i++) {
+      if (products[i].name.toLowerCase() == lastProductName){
+        return true
+      }
+    }   
+  }
+
   return {
     products,
     addProductInList,
@@ -66,6 +81,8 @@ export const useProductsStore = defineStore('products', () => {
     saveProductsForm,
     summPrice,
     getProductsFromLocaleStorage,
-    clearProducts
+    clearProducts,
+    updateProduct,
+    searchDuplicatesProducts
   }
 })

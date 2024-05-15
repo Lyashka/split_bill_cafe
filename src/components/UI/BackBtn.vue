@@ -1,10 +1,14 @@
 <template>
-  <v-btn icon="$first" variant="plain" @click="openPrevPage"> </v-btn>
+  <v-btn
+    icon="mdi-undo"
+    
+    variant="plain"
+    @click="openPrevPage"
+  />
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { defineProps } from 'vue'
 
 const props = defineProps({
   url: String
@@ -15,5 +19,3 @@ function openPrevPage() {
   router.push(`${props.url}`)
 }
 </script>
-
-<style></style>

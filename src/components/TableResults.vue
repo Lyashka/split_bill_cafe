@@ -9,15 +9,19 @@
         </tr>
         <tr v-if="arrDebtors.length == 0">
           <th></th>
-          <th class="text-message">Никто ничего не должен</th>
+          <th class="text-message">
+            Никто ничего не должен
+          </th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="item in arrDebtors">
+        <tr v-for="item in arrDebtors" :key="item.id">
           <td>{{ item.name }}</td>
           <td>{{ item.debt.name }}</td>
-          <td>{{ Math.round(item.debt.price * 10) / 10 }}</td>
+          <td>
+            {{ Math.round(item.debt.price * 10) / 10 }}
+          </td>
         </tr>
       </tbody>
     </v-table>
@@ -25,9 +29,7 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue'
-
-const props = defineProps({
+defineProps({
   arrDebtors: Array
 })
 </script>

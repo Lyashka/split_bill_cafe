@@ -1,10 +1,33 @@
 <template>
-  <v-card class="mx-auto text-center mt-16 card-container" max-width="600px" min-height="100px">
-    <div class="btn-back-container">
-      <BackBtn :url="'/products'" />
-      <label>Результаты</label>
-      <v-btn @click="resetForms()" variant="plain">Начать занаво</v-btn>
-    </div>
+  <v-card
+    class="mx-auto text-center mt-5 card-container"
+    max-width="600px"
+    min-height="100px"
+  > 
+    <v-row 
+      no-gutters 
+      align="center" 
+      justify="center"
+      >
+      <v-col cols="1">
+        <BackBtn :url="'/products'" />
+      </v-col>
+      <v-col cols="2"/>
+      <v-col >
+        <label >Результаты</label>
+      </v-col>
+      <v-col >
+        <v-btn 
+        block
+        variant="outlined"
+        size="large" 
+        @click="resetForms"
+        > 
+        Начать занаво
+      </v-btn>
+      </v-col>
+      
+    </v-row>
 
     <TableResults :arrDebtors="arrDebtors" />
   </v-card>
@@ -28,7 +51,7 @@ const { users, clearUsers } = usersStore
 
 let arrDebtors = reactive([])
 
-let expenses = reactive([])
+const expenses = reactive([])
 function calculationResults() {
   products.forEach((e) => {
     //Перебор по списку кушающих и добавление тех, кто должен в список expenses
@@ -63,25 +86,24 @@ function calculationExpenses() {
 
     return acc
   }, [])
-  // Вычисление кто кому должен при разных считах
+  // Вычисление кто кому должен при разных счетах
   const differentAccounts = arrSummDuplicate.map((item, index) => {
-    if (item.debt.price > 0) {
-      const oppositeDebtIndex = arrSummDuplicate.findIndex(
-        (debt) =>
-          debt.name === item.debt.name && debt.debt.name === item.name && debt.debt.price > 0
-      )
-      if (oppositeDebtIndex !== -1) {
-        if (arrSummDuplicate[oppositeDebtIndex].debt.price >= item.debt.price) {
-          arrSummDuplicate[oppositeDebtIndex].debt.price -= item.debt.price
-          item.debt.price = 0
-        } else {
-          item.debt.price -= arrSummDuplicate[oppositeDebtIndex].debt.price
-          arrSummDuplicate[oppositeDebtIndex].debt.price = 0
+      if (item.debt.price > 0) {
+        const oppositeDebtIndex = arrSummDuplicate.findIndex((debt) => debt.name === item.debt.name && debt.debt.name === item.name && debt.debt.price > 0)
+        
+        if (oppositeDebtIndex !== -1) {
+          if (arrSummDuplicate[oppositeDebtIndex].debt.price >= item.debt.price) {
+            arrSummDuplicate[oppositeDebtIndex].debt.price -= item.debt.price
+            item.debt.price = 0
+          } else {
+            item.debt.price -= arrSummDuplicate[oppositeDebtIndex].debt.price
+            arrSummDuplicate[oppositeDebtIndex].debt.price = 0
+          }
         }
       }
+      return item
     }
-    return item
-  })
+  )
 
   arrDebtors = differentAccounts
 }

@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import PageAddUsers from '../views/PageAddUsers.vue'
-import PageAddProducts from '../views/PageAddProducts.vue'
-import PageResults from '../views/PageResults.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,17 +6,17 @@ const router = createRouter({
     {
       path: '/',
       name: 'users',
-      component: PageAddUsers
+      component: () => import('../views/PageAddUsers.vue')
     },
     {
       path: '/products',
       name: 'products',
-      component: PageAddProducts
+      component: () => import('../views/PageAddProducts.vue')
     },
     {
       path: '/results',
       name: 'results',
-      component: PageResults
+      component: () => import('../views/PageResults.vue')
     }
   ]
 })

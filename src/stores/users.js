@@ -3,9 +3,9 @@ import { defineStore } from 'pinia'
 import { useRouter } from 'vue-router'
 
 export const useUsersStore = defineStore('users', () => {
-  let users = reactive([])
+  const users = reactive([])
 
-  const newUser = function () {
+   const addNewUser = function () {
     users.push({
       name: '',
       id: users[users.length - 1] == undefined ? 1 : users[users.length - 1].id + 1
@@ -17,13 +17,9 @@ export const useUsersStore = defineStore('users', () => {
   }
 
   function addUserInList() {
-    if (users.length == 0) {
-      newUser()
-    } else {
       if (!isEmptyName()) {
-        newUser()
+        addNewUser()
       }
-    }
   }
 
   function removeUser(id) {
@@ -61,5 +57,22 @@ export const useUsersStore = defineStore('users', () => {
     users.splice(0, users.length)
   }
 
-  return { users, addUserInList, removeUser, saveUsersForm, getUsersFromLocaleStorage, clearUsers }
+  function searchDuplicates(){
+    const lastUserName = users[users.length - 1].name.toLowerCase();
+    for (let i = 0; i < users.length - 1; i++) {
+      if (users[i].name.toLowerCase() == lastUserName){
+        return true
+      }
+    }    
+  }
+
+  return { 
+    users,
+    addUserInList, 
+    removeUser, 
+    saveUsersForm, 
+    getUsersFromLocaleStorage, 
+    clearUsers,
+    searchDuplicates
+    }
 })

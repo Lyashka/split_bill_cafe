@@ -1,40 +1,58 @@
 <template>
   <v-list-item>
-    <v-row align="center" justify="center">
+    <v-row  align="center" justify="center">
       <v-col cols="5">
         <v-text-field
-          variant="underlined"
-          :rules="rules"
-          placeholder="Название позиции"
           v-model="item.name"
-        >
-        </v-text-field>
+          label="Название"
+          placeholder="Введите название позиции"
+          variant="underlined"
+          :rules="[rules.checkStringProduct]"
+        />  
       </v-col>
       <v-col cols="5">
         <v-text-field
-          variant="underlined"
-          :rules="rules"
-          type="number"
-          placeholder="Стоимость"
           v-model="item.price"
-        >
-        </v-text-field>
+          label="Цена"
+          placeholder="Введите цену продукта"
+          variant="underlined"
+          type="number"
+          :rules="[rules.checkNumber]"
+        />
       </v-col>
       <v-col cols="1">
-        <v-btn icon="$close" density="compact" variant="text" @click="removeProduct(item.id)">
-        </v-btn>
+        <v-btn
+          icon="mdi-window-close"
+          density="compact"
+          variant="text"
+          @click="removeProduct(item.id)"
+        />
       </v-col>
       <v-col cols="1">
-        <v-btn @click="toggleExpansion" :icon="toggleNameIcon" density="compact" variant="text">
-        </v-btn>
+        <v-btn 
+          size="x-large"
+          density="compact"
+          variant="text"
+          @click="toggleExpansion"
+          :icon="toggleNameIcon"
+        />
       </v-col>
     </v-row>
 
-    <v-row class="mb-5 ml-1" v-if="userPayer != ''">
-      <v-chip density="comfortable" size="small" color="green">
+    <v-row v-if="userPayer != ''" class="mb-5 ml-1">
+      <v-chip
+        density="comfortable"
+        size="small"
+        color="green"
+      >
         {{ userPayer }}
       </v-chip>
-      <v-chip density="comfortable" size="small" v-for="item in checkInfo">
+      <v-chip
+        v-for="item in checkInfo"
+        :key="item.id"
+        density="comfortable"
+        size="small"
+      >
         {{ item.name }}
       </v-chip>
     </v-row>
@@ -42,32 +60,39 @@
     <div v-if="expanded" class="ml-3">
       <v-row>
         <v-select
+          v-model="userPayer"
           variant="solo-inverted"
           style="width: 100%"
           label="Платит"
           :items="arrListNameUsers"
-          v-model="userPayer"
-        ></v-select>
-        <div style="width: 100%; text-align: start">Кто ел:</div>
+          @update:modelValue="updateUserPayer"
+        />
+        <div style="width: 100%; text-align: start">
+          Кто ел:
+        </div>
         <v-checkbox
+          v-for="item in users" 
+          :key="item.id"
           class="pl-1 checkbox"
-          v-for="item in users"
+          v-model="checkInfo"
           :label="item.name"
           :value="item"
-          v-model="checkInfo"
-        ></v-checkbox>
+          @update:modelValue="updateUsersAte"
+        />
       </v-row>
     </div>
   </v-list-item>
 </template>
 
 <script setup>
-import { ref, defineProps, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useProductsStore } from '../stores/products'
 import { useUsersStore } from '../stores/users'
 
+import rules  from '../composables/commonValidators'
+
 const productsStore = useProductsStore()
-const { removeProduct, products, getProductsFromLocaleStorage } = productsStore
+const { removeProduct, getProductsFromLocaleStorage, updateProduct } = productsStore
 
 const usersStore = useUsersStore()
 const { users, getUsersFromLocaleStorage } = usersStore
@@ -76,48 +101,39 @@ const props = defineProps({
   item: Object
 })
 
-const rules = [
-  (value) => {
-    if (value.trim()) return true
-    return 'Обязательное поле'
-  }
-]
-
-let expanded = ref(false)
-let toggleNameIcon = ref('$expand')
+const expanded = ref(false)
+const toggleNameIcon = ref('mdi-chevron-down')
 function toggleExpansion() {
   expanded.value = !expanded.value
-  if (toggleNameIcon.value == '$expand') {
-    toggleNameIcon.value = '$collapse'
-  } else {
-    toggleNameIcon.value = '$expand'
-  }
+  toggleNameIcon.value = expanded.value ? 'mdi-chevron-up' : 'mdi-chevron-down'
 }
 
 // add users ate in product
-let checkInfo = ref([])
-watch(checkInfo, async () => {
-  props.item.usersAte = checkInfo.value
-})
+const checkInfo = ref([])
+const updateUsersAte = (newUsersAte) => {
+  updateProduct({...props.item, usersAte: newUsersAte})
+}
 
 //add userPayer in product
-let arrListNameUsers = users.map((user) => user.name)
-let userPayer = ref('')
-watch(userPayer, async () => {
-  props.item.userPayer = userPayer.value
-})
+const arrListNameUsers = users.map((user) => user.name)
+const userPayer = ref('')
+const updateUserPayer = (newUserPayer) => {
+  updateProduct({...props.item, userPayer: newUserPayer})
+}
 
 //get users and products from localeStorage
-getUsersFromLocaleStorage()
+onMounted(() => {
+  getUsersFromLocaleStorage()
+  if (getProductsFromLocaleStorage() != null) {
+    getProductsFromLocaleStorage().forEach((e) => {
+      if (e.id == props.item.id) {
+        userPayer.value = e.userPayer
+        checkInfo.value = e.usersAte
+      }
+    })
+  }
+})
 
-if (getProductsFromLocaleStorage() != null) {
-  getProductsFromLocaleStorage().forEach((e) => {
-    if (e.id == props.item.id) {
-      userPayer.value = e.userPayer
-      checkInfo.value = e.usersAte
-    }
-  })
-}
 </script>
 
 <style scoped lang="scss">
