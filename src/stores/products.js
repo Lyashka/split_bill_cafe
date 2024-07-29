@@ -56,7 +56,6 @@ export const useProductsStore = defineStore('products', () => {
   }
 
   function updateProduct(newProductItem) {
-    console.log(newProductItem);
     products.forEach(e => {
       if (e.id == newProductItem.id){
         e.userPayer = newProductItem.userPayer
