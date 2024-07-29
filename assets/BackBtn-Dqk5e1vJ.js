@@ -1,1 +1,0 @@
-import{n as s,r as a,o as p,c as _}from"./index-DC91heDb.js";const l=(o,t)=>{const n=o.__vccOpts||o;for(const[r,e]of t)n[r]=e;return n},m={__name:"BackBtn",props:{url:String},setup(o){const t=o,n=s();function r(){n.push(`${t.url}`)}return(e,u)=>{const c=a("v-btn");return p(),_(c,{icon:"mdi-undo",variant:"plain",onClick:r})}}};export{l as _,m as a};
